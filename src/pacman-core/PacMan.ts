@@ -1,3 +1,5 @@
+import { OnGrid, IMovement, Position, Direction } from './Common';
+
 enum State {
     Regular = "REGULAR",
     Super = "SUPER",
@@ -10,7 +12,7 @@ enum BallType {
 
 const BALL_THRESHOLD_TO_LEVEL = 40;
 
-class PacMan {
+class PacMan implements OnGrid {
     lives: number = 10;
     points: number = 0;
     level: number = 0;
@@ -18,10 +20,19 @@ class PacMan {
     ghostCount: Map<string, number>;
     state: State;
     superTime: number = 0;
+
+    position: Position;
+    movement: IMovement;
+    direction: Direction;
     
-    constructor() {
+    constructor(movement: IMovement) {
         this.ghostCount = new Map<string, number>();
         this.state = State.Regular;
+        this.movement = movement;
+    }
+
+    public changeDirection(d: Direction) {
+        this.direction = d;
     }
 
     public totalGhostCount(): number {
@@ -56,6 +67,7 @@ class PacMan {
     }
 
     public tick(): void {
+        this.position = this.movement.makeMovement(this.position, this.direction);        
         if (this.state === State.Super) {
             this.superTime -= 1;
         }

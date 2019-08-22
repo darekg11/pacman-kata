@@ -1,9 +1,10 @@
 import PacMan, { BallType, BALL_THRESHOLD_TO_LEVEL, State } from '../src/pacman-core/PacMan';
+import { EntityBaseMovement } from '../src/pacman-core/Common'
 
 let p;
 
 beforeEach(() => {
-    p = new PacMan();
+    p = new PacMan(new EntityBaseMovement());
 })
 
 test('basic', () => {
